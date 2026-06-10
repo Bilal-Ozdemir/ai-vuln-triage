@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "vulnerability": "SQL Injection",
+    "severity": "High",
+    "url": "https://logistics-app.com/track",
+    "description": "User input in the tracking ID field is passed directly to the database query without sanitization."
+  },
+  {
+    "id": 2,
+    "vulnerability": "Cross-Site Scripting (XSS)",
+    "severity": "Medium",
+    "url": "https://logistics-app.com/search",
+    "description": "The search field reflects user input directly in the page response without encoding."
+  },
+  {
+    "id": 3,
+    "vulnerability": "Broken Authentication",
+    "severity": "High",
+    "url": "https://logistics-app.com/login",
+    "description": "The login endpoint does not implement rate limiting, allowing brute force attacks."
+  },
+  {
+    "id": 4,
+    "vulnerability": "Sensitive Data Exposure",
+    "severity": "Medium",
+    "url": "https://logistics-app.com/api/shipments",
+    "description": "API response includes full customer addresses and phone numbers without field-level access control."
+  }
+]
