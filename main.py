@@ -9,8 +9,19 @@ load_dotenv()
 api_key = os.getenv("ANTHROPIC_API_KEY")
 client = anthropic.Anthropic(api_key=api_key)
 
-with open("scan_results.json", "r") as f:
-    vulnerabilities = json.load(f)
+with open("zap_scan_results.json", "r", encoding="utf-8") as f:
+    raw = json.load(f)
+
+vulnerabilities = []
+for site in raw.get("site", []):
+    for alert in site.get("alerts", []):
+        vulnerabilities.append({
+            "id": alert.get("pluginid"),
+            "vulnerability": alert.get("name"),
+            "severity": alert.get("riskdesc"),
+            "url": alert.get("instances", [{}])[0].get("uri", "N/A"),
+            "description": alert.get("desc", "")
+        })
 
 results = []
 
@@ -64,7 +75,7 @@ html = """
 </head>
 <body>
     <h1>AI-Assisted Vulnerability Triage Report</h1>
-    <p>Generated for: Logistics Web Application | Tool: OWASP ZAP (simulated) + Claude AI</p>
+    <p>Generated for: DVWA (Damn Vulnerable Web Application) | Tool: OWASP ZAP + Claude AI</p>
 """
 
 for result in results:
@@ -81,7 +92,11 @@ for result in results:
     </div>
 """
 
-html += "</body></html>"
+html += """
+<footer style="margin-top: 40px; padding: 20px; text-align: center; color: #7f8c8d; font-size: 0.85em; border-top: 1px solid #ddd;">
+    © 2026 Muhammed Bilal Ozdemir. All rights reserved.
+</footer>
+</body></html>"""
 
 with open("report.html", "w", encoding="utf-8") as f:
     f.write(html)
